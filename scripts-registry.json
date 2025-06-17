@@ -1,0 +1,36 @@
+{
+  "show_notification": {
+    "name": "show_notification",
+    "script": "display notification \"{{message}}\" with title \"{{title}}\"",
+    "description": "macOSの通知を表示する",
+    "args": [
+      {
+        "name": "message",
+        "type": "string",
+        "description": "通知メッセージ",
+        "required": true
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "description": "通知タイトル",
+        "required": false,
+        "defaultValue": "Notification"
+      }
+    ],
+    "usage": "show_notification(message=\"Hello\", title=\"My App\")",
+    "category": "ui",
+    "createdAt": "2025-06-17T09:38:11.056Z",
+    "updatedAt": "2025-06-17T09:38:11.058Z"
+  },
+  "get_frontmost_app": {
+    "name": "get_frontmost_app",
+    "script": "tell application \"System Events\" to get name of first application process whose frontmost is true",
+    "description": "最前面のアプリケーション名を取得する",
+    "args": [],
+    "usage": "get_frontmost_app()",
+    "category": "system",
+    "createdAt": "2025-06-17T09:38:11.058Z",
+    "updatedAt": "2025-06-17T09:38:11.058Z"
+  }
+}
