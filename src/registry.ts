@@ -7,7 +7,18 @@ export class ScriptRegistryManager {
   private registry: ScriptRegistry = {};
 
   constructor(registryPath?: string) {
-    this.registryPath = registryPath || join(process.cwd(), 'scripts-registry.json');
+    // Try to use private registry first, fallback to sample
+    const privateRegistry = join(process.cwd(), 'scripts-registry.json');
+    const sampleRegistry = join(process.cwd(), 'scripts-registry.sample.json');
+    
+    if (registryPath) {
+      this.registryPath = registryPath;
+    } else if (existsSync(privateRegistry)) {
+      this.registryPath = privateRegistry;
+    } else {
+      this.registryPath = privateRegistry; // Will be created from sample
+    }
+    
     this.loadRegistry();
   }
 
@@ -17,7 +28,16 @@ export class ScriptRegistryManager {
         const data = readFileSync(this.registryPath, 'utf8');
         this.registry = JSON.parse(data);
       } else {
-        this.initializeWithDefaults();
+        // Try to load from sample file if private doesn't exist
+        const samplePath = join(process.cwd(), 'scripts-registry.sample.json');
+        if (existsSync(samplePath)) {
+          const sampleData = readFileSync(samplePath, 'utf8');
+          this.registry = JSON.parse(sampleData);
+          // Save to private registry
+          this.saveRegistry();
+        } else {
+          this.initializeWithDefaults();
+        }
       }
     } catch (error) {
       console.error('Failed to load script registry:', error);

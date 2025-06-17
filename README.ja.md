@@ -116,6 +116,15 @@ npm start
 - 危険なコマンド（`do shell script`、`System Events`など）はブロックされます
 - スクリプトは`scripts-registry.json`に永続化されます
 
+## プライベートスクリプト
+
+個人用のAppleScriptを非公開にする方法：
+
+1. カスタムスクリプトは`scripts-registry.json`に保存されます（gitignore対象）
+2. リポジトリには`scripts-registry.sample.json`のサンプルスクリプトが含まれています
+3. 初回起動時、サンプルレジストリがコピーされてプライベートレジストリが作成されます
+4. プライベートスクリプトはリポジトリにコミットされません
+
 ## ライセンス
 
 MITライセンス

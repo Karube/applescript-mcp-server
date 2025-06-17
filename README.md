@@ -116,6 +116,15 @@ npm start
 - Dangerous commands (`do shell script`, `System Events`, etc.) are blocked
 - Scripts are persisted in `scripts-registry.json`
 
+## Private Scripts
+
+To keep your personal AppleScripts private:
+
+1. Your custom scripts are stored in `scripts-registry.json` (gitignored)
+2. The repository includes `scripts-registry.sample.json` with example scripts
+3. On first run, the sample registry is copied to create your private registry
+4. Your private scripts will never be committed to the repository
+
 ## License
 
 MIT License
