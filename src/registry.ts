@@ -30,10 +30,10 @@ export class ScriptRegistryManager {
       'show_notification': {
         name: 'show_notification',
         script: 'display notification "{{message}}" with title "{{title}}"',
-        description: 'macOSの通知を表示する',
+        description: 'Display macOS notification',
         args: [
-          { name: 'message', type: 'string', description: '通知メッセージ', required: true },
-          { name: 'title', type: 'string', description: '通知タイトル', required: false, defaultValue: 'Notification' }
+          { name: 'message', type: 'string', description: 'Notification message', required: true },
+          { name: 'title', type: 'string', description: 'Notification title', required: false, defaultValue: 'Notification' }
         ],
         usage: 'show_notification(message="Hello", title="My App")',
         category: 'ui',
@@ -43,7 +43,7 @@ export class ScriptRegistryManager {
       'get_frontmost_app': {
         name: 'get_frontmost_app',
         script: 'tell application "System Events" to get name of first application process whose frontmost is true',
-        description: '最前面のアプリケーション名を取得する',
+        description: 'Get the frontmost application name',
         args: [],
         usage: 'get_frontmost_app()',
         category: 'system',

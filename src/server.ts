@@ -40,17 +40,17 @@ class AppleScriptMCPServer {
       const tools: Tool[] = [
         {
           name: 'run_applescript',
-          description: '登録済みのAppleScriptを実行する',
+          description: 'Execute a registered AppleScript',
           inputSchema: {
             type: 'object',
             properties: {
               script_name: {
                 type: 'string',
-                description: '実行するスクリプト名',
+                description: 'Script name to execute',
               },
               args: {
                 type: 'object',
-                description: 'スクリプトの引数（オブジェクト形式）',
+                description: 'Script arguments (object format)',
                 additionalProperties: true,
               },
             },
@@ -59,17 +59,17 @@ class AppleScriptMCPServer {
         },
         {
           name: 'run_raw_applescript',
-          description: '生のAppleScriptを直接実行する',
+          description: 'Execute raw AppleScript code directly',
           inputSchema: {
             type: 'object',
             properties: {
               script: {
                 type: 'string',
-                description: '実行するAppleScriptコード',
+                description: 'AppleScript code to execute',
               },
               args: {
                 type: 'object',
-                description: 'スクリプトの引数（{{key}}形式で置換）',
+                description: 'Script arguments (replace with {{key}} format)',
                 additionalProperties: true,
               },
             },
@@ -78,30 +78,30 @@ class AppleScriptMCPServer {
         },
         {
           name: 'list_scripts',
-          description: '登録済みスクリプトの一覧を取得する',
+          description: 'Get list of registered scripts',
           inputSchema: {
             type: 'object',
             properties: {
               category: {
                 type: 'string',
-                description: 'カテゴリでフィルター（オプション）',
+                description: 'Filter by category (optional)',
               },
               search: {
                 type: 'string',
-                description: 'キーワード検索（オプション）',
+                description: 'Keyword search (optional)',
               },
             },
           },
         },
         {
           name: 'get_script_info',
-          description: '特定のスクリプトの詳細情報を取得する',
+          description: 'Get detailed information about a specific script',
           inputSchema: {
             type: 'object',
             properties: {
               script_name: {
                 type: 'string',
-                description: 'スクリプト名',
+                description: 'Script name',
               },
             },
             required: ['script_name'],
@@ -109,25 +109,25 @@ class AppleScriptMCPServer {
         },
         {
           name: 'add_script',
-          description: '新しいスクリプトを登録する',
+          description: 'Register a new script',
           inputSchema: {
             type: 'object',
             properties: {
               name: {
                 type: 'string',
-                description: 'スクリプト名',
+                description: 'Script name',
               },
               script: {
                 type: 'string',
-                description: 'AppleScriptコード',
+                description: 'AppleScript code',
               },
               description: {
                 type: 'string',
-                description: 'スクリプトの説明',
+                description: 'Script description',
               },
               args: {
                 type: 'array',
-                description: '引数の定義',
+                description: 'Argument definitions',
                 items: {
                   type: 'object',
                   properties: {
@@ -142,11 +142,11 @@ class AppleScriptMCPServer {
               },
               usage: {
                 type: 'string',
-                description: '使用例',
+                description: 'Usage example',
               },
               category: {
                 type: 'string',
-                description: 'カテゴリ',
+                description: 'Category',
               },
             },
             required: ['name', 'script', 'description'],
@@ -154,13 +154,13 @@ class AppleScriptMCPServer {
         },
         {
           name: 'remove_script',
-          description: 'スクリプトを削除する',
+          description: 'Remove a script',
           inputSchema: {
             type: 'object',
             properties: {
               script_name: {
                 type: 'string',
-                description: '削除するスクリプト名',
+                description: 'Script name to remove',
               },
             },
             required: ['script_name'],

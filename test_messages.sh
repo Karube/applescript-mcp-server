@@ -40,60 +40,60 @@ echo "3. スクリプト一覧テスト"
 echo '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"list_scripts","arguments":{}}}' | node dist/server.js
 echo ""
 
-echo "4. 通知テスト（簡単なメッセージ）"
+echo "4. Notification test (simple message)"
 echo '{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"run_applescript","arguments":{"script_name":"show_notification","args":{"message":"Hello","title":"Test"}}}}' | node dist/server.js
 echo ""
 
-echo "5. 最前面アプリ取得テスト"
+echo "5. Get frontmost app test"
 echo '{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"run_applescript","arguments":{"script_name":"get_frontmost_app","args":{}}}}' | node dist/server.js
 echo ""
 
-echo "6. 生スクリプト実行テスト"
+echo "6. Raw script execution test"
 echo '{"jsonrpc":"2.0","id":6,"method":"tools/call","params":{"name":"run_raw_applescript","arguments":{"script":"display dialog \"MCP Test\" buttons {\"OK\"} default button 1","args":{}}}}' | node dist/server.js
 echo ""
 
-echo "テスト完了"
+echo "Test completed"
 EOF
 
 chmod +x test-individual.sh
 
-echo "✅ test-individual.sh 作成完了"
+echo "✅ test-individual.sh created successfully"
 
-# 一括テスト用スクリプト作成
-echo "作成中: test-batch.sh"
+# Create batch test script
+echo "Creating: test-batch.sh"
 cat > test-batch.sh << 'EOF'
 #!/bin/bash
 
-echo "🧪 AppleScript MCP Server 一括テスト"
+echo "🧪 AppleScript MCP Server Batch Test"
 echo "==================================="
 
-echo "サーバーを起動して test-messages.jsonl を処理します..."
+echo "Starting server and processing test-messages.jsonl..."
 echo ""
 
 if [ ! -f dist/server.js ]; then
-    echo "❌ dist/server.js が見つかりません"
-    echo "npm run build を実行してください"
+    echo "❌ dist/server.js not found"
+    echo "Please run npm run build"
     exit 1
 fi
 
-echo "テスト実行中..."
+echo "Running tests..."
 cat test-messages.jsonl | node dist/server.js
 
 echo ""
-echo "✅ 一括テスト完了"
+echo "✅ Batch test completed"
 EOF
 
 chmod +x test-batch.sh
 
-echo "✅ test-batch.sh 作成完了"
+echo "✅ test-batch.sh created successfully"
 
 echo ""
-echo "📊 作成されたテストファイル:"
+echo "📊 Created test files:"
 ls -la test-*
 echo ""
-echo "🎯 テスト実行方法:"
-echo "1. 個別テスト: ./test-individual.sh"
-echo "2. 一括テスト: ./test-batch.sh"
-echo "3. ファイル使用: cat test-messages.jsonl | node dist/server.js"
+echo "🎯 Test execution methods:"
+echo "1. Individual test: ./test-individual.sh"
+echo "2. Batch test: ./test-batch.sh"
+echo "3. File usage: cat test-messages.jsonl | node dist/server.js"
 echo ""
-echo "まず個別テストで動作確認することをお勧めします。"
+echo "We recommend first checking the operation with individual tests."

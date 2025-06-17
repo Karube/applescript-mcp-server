@@ -15,10 +15,10 @@ export class AppleScriptExecutor {
     const startTime = Date.now();
     
     try {
-      // 引数をスクリプトに埋め込む
+      // Embed arguments into the script
       const processedScript = this.processScriptWithArgs(script, args);
       
-      // osascriptコマンドを実行（エスケープは1回のみ）
+      // Execute osascript command (escape only once)
       const command = `osascript -e ${JSON.stringify(processedScript)}`;
       
       const { stdout, stderr } = await execAsync(command, {
@@ -54,14 +54,14 @@ export class AppleScriptExecutor {
   }
 
   /**
-   * スクリプト内の引数プレースホルダーを実際の値に置換
+   * Replace argument placeholders in the script with actual values
    */
   private processScriptWithArgs(script: string, args: Record<string, any>): string {
     let processedScript = script;
     
     for (const [key, value] of Object.entries(args)) {
       const placeholder = `{{${key}}}`;
-      // 文字列の場合はダブルクォートで囲む、それ以外はそのまま
+      // Wrap strings in double quotes, others remain as-is
       const stringValue = typeof value === 'string' ? `"${value}"` : String(value);
       processedScript = processedScript.replace(new RegExp(placeholder, 'g'), stringValue);
     }
@@ -70,7 +70,7 @@ export class AppleScriptExecutor {
   }
 
   /**
-   * 引数の型検証
+   * Validate argument types
    */
   validateArgs(args: Record<string, any>, expectedArgs: ScriptArgument[]): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
@@ -78,19 +78,19 @@ export class AppleScriptExecutor {
     for (const expectedArg of expectedArgs) {
       const value = args[expectedArg.name];
       
-      // 必須引数のチェック
+      // Check required arguments
       if (expectedArg.required && (value === undefined || value === null)) {
         errors.push(`Required argument '${expectedArg.name}' is missing`);
         continue;
       }
       
-      // デフォルト値の設定
+      // Set default values
       if (value === undefined && expectedArg.defaultValue !== undefined) {
         args[expectedArg.name] = expectedArg.defaultValue;
         continue;
       }
       
-      // 型チェック
+      // Type checking
       if (value !== undefined) {
         const actualType = typeof value;
         if (expectedArg.type !== actualType) {

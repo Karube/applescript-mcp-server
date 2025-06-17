@@ -1,19 +1,19 @@
 #!/bin/bash
 
-echo "🧪 AppleScript MCP Server 一括テスト"
+echo "🧪 AppleScript MCP Server Batch Test"
 echo "==================================="
 
-echo "サーバーを起動して test-messages.jsonl を処理します..."
+echo "Starting server and processing test-messages.jsonl..."
 echo ""
 
 if [ ! -f dist/server.js ]; then
-    echo "❌ dist/server.js が見つかりません"
-    echo "npm run build を実行してください"
+    echo "❌ dist/server.js not found"
+    echo "Please run npm run build"
     exit 1
 fi
 
-echo "テスト実行中..."
+echo "Running tests..."
 cat test-messages.jsonl | node dist/server.js
 
 echo ""
-echo "✅ 一括テスト完了"
+echo "✅ Batch test completed"
