@@ -58,25 +58,6 @@ class AppleScriptMCPServer {
           },
         },
         {
-          name: 'run_raw_applescript',
-          description: 'Execute raw AppleScript code directly',
-          inputSchema: {
-            type: 'object',
-            properties: {
-              script: {
-                type: 'string',
-                description: 'AppleScript code to execute',
-              },
-              args: {
-                type: 'object',
-                description: 'Script arguments (replace with {{key}} format)',
-                additionalProperties: true,
-              },
-            },
-            required: ['script'],
-          },
-        },
-        {
           name: 'list_scripts',
           description: 'Get list of registered scripts',
           inputSchema: {
@@ -107,65 +88,6 @@ class AppleScriptMCPServer {
             required: ['script_name'],
           },
         },
-        {
-          name: 'add_script',
-          description: 'Register a new script',
-          inputSchema: {
-            type: 'object',
-            properties: {
-              name: {
-                type: 'string',
-                description: 'Script name',
-              },
-              script: {
-                type: 'string',
-                description: 'AppleScript code',
-              },
-              description: {
-                type: 'string',
-                description: 'Script description',
-              },
-              args: {
-                type: 'array',
-                description: 'Argument definitions',
-                items: {
-                  type: 'object',
-                  properties: {
-                    name: { type: 'string' },
-                    type: { type: 'string', enum: ['string', 'number', 'boolean'] },
-                    description: { type: 'string' },
-                    required: { type: 'boolean' },
-                    defaultValue: {},
-                  },
-                  required: ['name', 'type', 'description'],
-                },
-              },
-              usage: {
-                type: 'string',
-                description: 'Usage example',
-              },
-              category: {
-                type: 'string',
-                description: 'Category',
-              },
-            },
-            required: ['name', 'script', 'description'],
-          },
-        },
-        {
-          name: 'remove_script',
-          description: 'Remove a script',
-          inputSchema: {
-            type: 'object',
-            properties: {
-              script_name: {
-                type: 'string',
-                description: 'Script name to remove',
-              },
-            },
-            required: ['script_name'],
-          },
-        },
       ];
 
       return { tools };
@@ -179,20 +101,11 @@ class AppleScriptMCPServer {
           case 'run_applescript':
             return await this.handleRunAppleScript(args);
           
-          case 'run_raw_applescript':
-            return await this.handleRunRawAppleScript(args);
-          
           case 'list_scripts':
             return await this.handleListScripts(args);
           
           case 'get_script_info':
             return await this.handleGetScriptInfo(args);
-          
-          case 'add_script':
-            return await this.handleAddScript(args);
-          
-          case 'remove_script':
-            return await this.handleRemoveScript(args);
           
           default:
             throw new Error(`Unknown tool: ${name}`);
@@ -235,26 +148,6 @@ class AppleScriptMCPServer {
             error: result.error,
             executionTime: result.executionTime,
             scriptName: script_name,
-          }, null, 2),
-        },
-      ],
-    };
-  }
-
-  private async handleRunRawAppleScript(args: any) {
-    const { script, args: scriptArgs = {} } = args;
-    
-    const result = await this.executor.execute(script, scriptArgs);
-    
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify({
-            success: result.success,
-            output: result.output,
-            error: result.error,
-            executionTime: result.executionTime,
           }, null, 2),
         },
       ],
@@ -310,33 +203,6 @@ class AppleScriptMCPServer {
     };
   }
 
-  private async handleAddScript(args: any) {
-    this.registry.addScript(args);
-    
-    return {
-      content: [
-        {
-          type: 'text',
-          text: `Script '${args.name}' has been successfully added to the registry.`,
-        },
-      ],
-    };
-  }
-
-  private async handleRemoveScript(args: any) {
-    const { script_name } = args;
-    
-    this.registry.removeScript(script_name);
-    
-    return {
-      content: [
-        {
-          type: 'text',
-          text: `Script '${script_name}' has been successfully removed from the registry.`,
-        },
-      ],
-    };
-  }
 
   async run(): Promise<void> {
     const transport = new StdioServerTransport();

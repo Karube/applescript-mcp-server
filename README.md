@@ -2,20 +2,18 @@
 
 [日本語版](README.ja.md)
 
-An MCP (Model Context Protocol) server that enables AI assistants to execute AppleScript commands on macOS. It provides a secure, registry-based approach to managing and executing AppleScript automation.
+An MCP (Model Context Protocol) server that enables AI assistants to execute pre-registered AppleScript commands on macOS. It provides a secure, registry-based approach to executing AppleScript automation with scripts managed outside of MCP.
 
 ## Features
 
 - **Script Registry**: Manage reusable AppleScripts in JSON format
 - **Template Support**: Dynamic parameters using `{{placeholder}}` syntax
 - **Security Validation**: Script validation before execution
-- **6 MCP Tools**:
+- **3 MCP Tools**:
   - `run_applescript` - Execute registered scripts
-  - `run_raw_applescript` - Execute raw AppleScript code directly
   - `list_scripts` - List all registered scripts
   - `get_script_info` - Get details about a specific script
-  - `add_script` - Register a new script
-  - `remove_script` - Remove a script from registry
+- **Separate Script Management**: Scripts are added/removed via `manage-scripts.js` utility, not through MCP
 
 ## Requirements
 
@@ -47,6 +45,22 @@ npm run dev
 npm start
 ```
 
+### Script Management
+
+```bash
+# Add a script from JSON file
+node manage-scripts.js add my-script.json
+
+# Remove a script
+node manage-scripts.js remove script_name
+
+# List all scripts
+node manage-scripts.js list
+
+# Get script details
+node manage-scripts.js info script_name
+```
+
 ### Running Tests
 
 ```bash
@@ -71,6 +85,7 @@ npm start
 │   ├── test-batch.sh      # Batch test runner
 │   ├── test-individual.sh # Individual test runner
 │   └── test-messages.jsonl # Test messages
+├── manage-scripts.js       # Script management utility
 ├── scripts-registry.json   # Registered scripts storage
 ├── package.json           # npm configuration
 ├── tsconfig.json          # TypeScript configuration
@@ -96,18 +111,32 @@ npm start
 }
 ```
 
-### Execute Raw AppleScript
+### Add New Script
+
+Create a JSON file with script definition:
 
 ```json
 {
-  "method": "tools/call",
-  "params": {
-    "name": "run_raw_applescript",
-    "arguments": {
-      "script": "display dialog \"Hello, World!\""
+  "name": "my_script",
+  "script": "display dialog \"{{message}}\"",
+  "description": "Show a dialog with custom message",
+  "args": [
+    {
+      "name": "message",
+      "type": "string",
+      "description": "Message to display",
+      "required": true
     }
-  }
+  ],
+  "usage": "my_script(message=\"Hello\")",
+  "category": "ui"
 }
+```
+
+Then add it:
+
+```bash
+node manage-scripts.js add my-script.json
 ```
 
 ## Security

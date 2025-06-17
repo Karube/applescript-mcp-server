@@ -2,20 +2,18 @@
 
 [English](README.md)
 
-AppleScriptをMCP (Model Context Protocol)経由で実行できるサーバーです。AIアシスタントがmacOSの自動化タスクを安全に実行できるようにします。
+事前登録されたAppleScriptをMCP (Model Context Protocol)経由で実行できるサーバーです。AIアシスタントがmacOSの自動化タスクを安全に実行できるようにします。スクリプト管理はMCP外で行います。
 
 ## 機能
 
 - **スクリプトレジストリ**: 再利用可能なAppleScriptをJSON形式で管理
 - **テンプレート機能**: `{{placeholder}}` 構文を使用した動的パラメータ
 - **セキュリティ検証**: 実行前のスクリプト検証
-- **6つのMCPツール**:
+- **3つのMCPツール**:
   - `run_applescript` - 登録済みスクリプトを実行
-  - `run_raw_applescript` - 生のAppleScriptコードを直接実行
   - `list_scripts` - 登録済みスクリプト一覧を表示
   - `get_script_info` - 特定のスクリプトの詳細を取得
-  - `add_script` - 新しいスクリプトを登録
-  - `remove_script` - スクリプトを削除
+- **独立したスクリプト管理**: スクリプトの追加・削除は`manage-scripts.js`ユーティリティで行い、MCPを介しません
 
 ## 必要要件
 
@@ -47,6 +45,22 @@ npm run dev
 npm start
 ```
 
+### スクリプト管理
+
+```bash
+# JSONファイルからスクリプトを追加
+node manage-scripts.js add my-script.json
+
+# スクリプトを削除
+node manage-scripts.js remove script_name
+
+# 全スクリプトを一覧表示
+node manage-scripts.js list
+
+# スクリプト詳細を表示
+node manage-scripts.js info script_name
+```
+
 ### テストの実行
 
 ```bash
@@ -71,6 +85,7 @@ npm start
 │   ├── test-batch.sh      # バッチテスト実行
 │   ├── test-individual.sh # 個別テスト実行
 │   └── test-messages.jsonl # テストメッセージ
+├── manage-scripts.js       # スクリプト管理ユーティリティ
 ├── scripts-registry.json   # 登録済みスクリプト
 ├── package.json           # npm設定
 ├── tsconfig.json          # TypeScript設定
@@ -96,18 +111,32 @@ npm start
 }
 ```
 
-### 生のAppleScriptの実行
+### 新しいスクリプトの追加
+
+スクリプト定義のJSONファイルを作成:
 
 ```json
 {
-  "method": "tools/call",
-  "params": {
-    "name": "run_raw_applescript",
-    "arguments": {
-      "script": "display dialog \"こんにちは、世界！\""
+  "name": "my_script",
+  "script": "display dialog \"{{message}}\"",
+  "description": "カスタムメッセージでダイアログを表示",
+  "args": [
+    {
+      "name": "message",
+      "type": "string",
+      "description": "表示するメッセージ",
+      "required": true
     }
-  }
+  ],
+  "usage": "my_script(message=\"こんにちは\")",
+  "category": "ui"
 }
+```
+
+次に追加:
+
+```bash
+node manage-scripts.js add my-script.json
 ```
 
 ## セキュリティ
