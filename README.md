@@ -1,83 +1,85 @@
 # AppleScript MCP Server
 
-AppleScriptをMCP (Model Context Protocol)経由で実行できるサーバーです。AIアシスタントがmacOSの自動化タスクを安全に実行できるようにします。
+[日本語版](README.ja.md)
 
-## 機能
+An MCP (Model Context Protocol) server that enables AI assistants to execute AppleScript commands on macOS. It provides a secure, registry-based approach to managing and executing AppleScript automation.
 
-- **スクリプトレジストリ**: 再利用可能なAppleScriptをJSON形式で管理
-- **テンプレート機能**: `{{placeholder}}` 構文を使用した動的パラメータ
-- **セキュリティ検証**: 実行前のスクリプト検証
-- **6つのMCPツール**:
-  - `run_applescript` - 登録済みスクリプトを実行
-  - `run_raw_applescript` - 生のAppleScriptコードを直接実行
-  - `list_scripts` - 登録済みスクリプト一覧を表示
-  - `get_script_info` - 特定のスクリプトの詳細を取得
-  - `add_script` - 新しいスクリプトを登録
-  - `remove_script` - スクリプトを削除
+## Features
 
-## 必要要件
+- **Script Registry**: Manage reusable AppleScripts in JSON format
+- **Template Support**: Dynamic parameters using `{{placeholder}}` syntax
+- **Security Validation**: Script validation before execution
+- **6 MCP Tools**:
+  - `run_applescript` - Execute registered scripts
+  - `run_raw_applescript` - Execute raw AppleScript code directly
+  - `list_scripts` - List all registered scripts
+  - `get_script_info` - Get details about a specific script
+  - `add_script` - Register a new script
+  - `remove_script` - Remove a script from registry
 
-- macOS (AppleScriptが必要)
-- Node.js 16以上
-- npm または yarn
+## Requirements
 
-## インストール
+- macOS (AppleScript required)
+- Node.js 16+
+- npm or yarn
+
+## Installation
 
 ```bash
-# 依存関係をインストール
+# Install dependencies
 npm install
 
-# TypeScriptをビルド
+# Build TypeScript
 npm run build
 ```
 
-## 使用方法
+## Usage
 
-### 開発環境での実行
+### Development
 
 ```bash
 npm run dev
 ```
 
-### プロダクション環境での実行
+### Production
 
 ```bash
 npm start
 ```
 
-### テストの実行
+### Running Tests
 
 ```bash
-# すべてのテストを実行
+# Run all tests
 ./tests/test-batch.sh
 
-# 個別のテストを実行
+# Run individual tests
 ./tests/test-individual.sh
 ```
 
-## プロジェクト構成
+## Project Structure
 
 ```
 .
-├── src/                    # ソースコード
-│   ├── server.ts          # MCPサーバー実装
-│   ├── applescript.ts     # AppleScript実行エンジン
-│   ├── registry.ts        # スクリプトレジストリ管理
-│   └── types.ts           # TypeScript型定義
-├── dist/                   # コンパイル済みJavaScript
-├── tests/                  # テストファイル
-│   ├── test-batch.sh      # バッチテスト実行
-│   ├── test-individual.sh # 個別テスト実行
-│   └── test-messages.jsonl # テストメッセージ
-├── scripts-registry.json   # 登録済みスクリプト
-├── package.json           # npm設定
-├── tsconfig.json          # TypeScript設定
-└── CLAUDE.md              # AI開発ガイドライン
+├── src/                    # Source code
+│   ├── server.ts          # MCP server implementation
+│   ├── applescript.ts     # AppleScript execution engine
+│   ├── registry.ts        # Script registry management
+│   └── types.ts           # TypeScript type definitions
+├── dist/                   # Compiled JavaScript
+├── tests/                  # Test files
+│   ├── test-batch.sh      # Batch test runner
+│   ├── test-individual.sh # Individual test runner
+│   └── test-messages.jsonl # Test messages
+├── scripts-registry.json   # Registered scripts storage
+├── package.json           # npm configuration
+├── tsconfig.json          # TypeScript configuration
+└── CLAUDE.md              # AI development guidelines
 ```
 
-## スクリプトの例
+## Script Examples
 
-### 登録済みスクリプトの実行
+### Execute Registered Script
 
 ```json
 {
@@ -94,7 +96,7 @@ npm start
 }
 ```
 
-### 生のAppleScriptの実行
+### Execute Raw AppleScript
 
 ```json
 {
@@ -108,16 +110,16 @@ npm start
 }
 ```
 
-## セキュリティ
+## Security
 
-- すべてのスクリプトは実行前に検証されます
-- 危険なコマンド（`do shell script`、`System Events`など）はブロックされます
-- スクリプトは`scripts-registry.json`に永続化されます
+- All scripts are validated before execution
+- Dangerous commands (`do shell script`, `System Events`, etc.) are blocked
+- Scripts are persisted in `scripts-registry.json`
 
-## ライセンス
+## License
 
-MITライセンス
+MIT License
 
-## 貢献
+## Contributing
 
-プルリクエストを歓迎します。大きな変更の場合は、まずissueを開いて変更内容について議論してください。
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
